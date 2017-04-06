@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+    <bean name="duke"
+            class="spring.test.implementations.performers.Juggler">
+        <constructor-arg value="15"/>
+    </bean>
+
+    <bean name="sonnet29"
+          class="spring.test.implementations.poems.Sonnet29"/>
+
+    <bean name="poeticDuke"
+          class="spring.test.implementations.performers.PoeticJuggler">
+        <constructor-arg value="#{T(java.lang.Integer).MAX_VALUE}"/>
+        <constructor-arg ref="sonnet29"/>
+    </bean>
+
+    <bean
+        name="theStage"
+        class="spring.test.Stage"
+        factory-method="getInstance"/>
+
+    <bean
+        name="theAuditorium"
+        class="spring.test.Auditorium"
+        init-method="turnLightOn"
+        destroy-method="turnLightOff"/>
+
+    <bean
+        name="saxophone"
+        class="spring.test.implementations.instruments.InstrumentImpl"
+        p:sound="TIO TIO TIO"/>
+
+    <bean
+        name="instrument"
+        class="spring.test.implementations.instruments.InstrumentImpl"
+        p:sound="PIOA PIOA PIOA"/>
+
+    <bean
+        name="guitar"
+        class="spring.test.implementations.instruments.InstrumentImpl"
+        p:sound="GUI GUI GUI"/>
+
+    <bean name="kenny"
+          class="spring.test.implementations.performers.Instrumentalist"
+          p:song="Jingle Bells"/>
+
+    <bean
+        name="andrew"
+        class="spring.test.implementations.performers.OneManBand"
+        p:song="Hallo">
+        <property name="instruments">
+            <map>
+                <entry key="PIANO" value-ref="instrument"/>
+                <entry key="GUITAR" value-ref="guitar"/>
+                <entry key="SAXOPHONE" value-ref="saxophone"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="carl"
+          class="spring.test.implementations.performers.Instrumentalist"
+          p:song="#{kenny.song}"/>
+
+    <bean name="harry"
+          class="spring.test.implementations.performers.Magician"
+          p:magicWords="CRA CRA CRA"
+          p:magicBox-ref="magicBox"
+    />
+
+    <bean name="magicBox"
+          class="spring.test.implementations.MagicBoxImpl">
+        <replaced-method
+            name="getContents"
+            replacer="andrewReplacer"/>
+    </bean>
+
+    <bean name="andrewReplacer"
+          class="spring.test.implementations.AndrewReplacer"/>
+
+    <bean name="refreshListener"
+          class="spring.test.RefreshListener"/>
+
+    <bean name="beanCounter"
+          class="spring.test.BeanCounter"/>
+
+    <bean name="specialBean"
+          class="spring.test.SpecialBean" />
+
+</beans>
